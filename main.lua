@@ -9,31 +9,7 @@ end
 -- groundh : 31
 
 function love.load()
-    spriteMap = loadTransparent('GRAFIK/GFXGROUN.BMP', 0, 0, 0)
-
-    -- water = love.graphics.newImage('sprites/water.png');
-    -- grass = love.graphics.newImage('sprites/grass.png');
-    -- dirt = love.graphics.newImage('sprites/dirt.png');
-    --
-    -- water = love.graphics.newImage('tiles/landscapeTiles_066.png');
-    -- grass = love.graphics.newImage('tiles/landscapeTiles_067.png');
-    -- dirt = love.graphics.newImage('tiles/landscapeTiles_083.png');
-
-    sand = love.graphics.newQuad(62, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-    sandStony = love.graphics.newQuad(310, 544, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-    sandGrassy = love.graphics.newQuad(310, 576, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-    sandHole = love.graphics.newQuad(744, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-
-    -- grass
-    grass = love.graphics.newQuad(124, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-    grassHilly = love.graphics.newQuad(248, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-    grassDirty = love.graphics.newQuad(310, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-    grassStony = love.graphics.newQuad(372, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-
-    highlightBorder = love.graphics.newQuad(496, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
-
-    -- water
-    water = love.graphics.newQuad(186, 512, 62, 32, spriteMap:getWidth(), spriteMap:getHeight())
+    grafik = require 'grafik'
 
     block_width = 62
     -- grass:getWidth()
@@ -111,28 +87,10 @@ function draw_map()
     for x = 1,grid_size do
         for y = 1,grid_size do
 
-            if grid[x][y] == 1 then
-                toDraw = grass
-            elseif grid[x][y] == 2 then
-                toDraw = water
-            elseif grid[x][y] == 3 then
-                toDraw = grassHilly
-            elseif grid[x][y] == 4 then
-                toDraw = grassDirty
-            elseif grid[x][y] == 5 then
-                toDraw = grassStony
-            elseif grid[x][y] == 6 then
-                toDraw = sand
-            elseif grid[x][y] == 7 then
-                toDraw = sandHole
-            elseif grid[x][y] == 8 then
-                toDraw = sandStony
-            elseif grid[x][y] == 9 then
-                toDraw = sandGrassy
-            end
+            toDraw = grafik.determineGraphicToDraw(grid[x][y])
 
             love.graphics.draw(
-            spriteMap,
+            grafik.spriteMap,
             toDraw,
             map_x + ((y-x) * (block_width/2)),
             map_y + ((x+y) * (block_depth/2)) - (block_depth * (grid_size/2))
@@ -140,8 +98,8 @@ function draw_map()
 
             if x == 10 and y == 12 then
             love.graphics.draw(
-            spriteMap,
-            highlightBorder,
+            grafik.spriteMap,
+            grafik.graphics.highlight.border,
             map_x + ((y-x) * (block_width/2)),
             map_y + ((x+y) * (block_depth/2)) - (block_depth * (grid_size/2))
             )
